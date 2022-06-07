@@ -1,0 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
+body {
+    background-image: url(../img/snow.jpg);
+    background-size: cover;
+}
+
+h1 {
+    font-family: 'Bebas Neue', cursive;
+}
