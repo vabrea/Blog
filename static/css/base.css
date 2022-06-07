@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Lobster&display=swap');
 
 body {
     background-image: url(../img/snow.jpg);
@@ -7,4 +7,25 @@ body {
 
 h1 {
     font-family: 'Bebas Neue', cursive;
+}
+
+p {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 21px;
+    text-transform: capitalize;
+}
+
+a {
+    font-family: 'Lobster', cursive;
+    text-decoration: none;
+    font-size: 20px;
+}
+
+.container {
+    text-align: center;
+}
+
+.list-group a {
+    color: black;
+    background-color: none;
 }
