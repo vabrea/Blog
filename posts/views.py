@@ -4,18 +4,44 @@ from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.urls import reverse_lazy
 from .models import Post
 
-class PostListView(ListView):
+class PostListView(LoginRequiredMixin,ListView):
     template_name = "posts/list.html"
     model = Post
 
-class PostDetailView(LoginRequiredMixin, DetailView):
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['post_list'] = Post.objects.filter(
+            is_private=False).order_by('created_on').reverse()
+        return context
+
+class PrivatePostListView(LoginRequiredMixin, ListView):
+    template_name = 'posts/private_list.html'
+    model = Post
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context ['post_list'] = Post.objects.filter(
+            is_private=True).filter(
+                author=self.request.user).order_by('created_on').reverse()
+        return context
+            
+        
+
+class PostDetailView(LoginRequiredMixin, UserPassesTestMixin,DetailView):
     template_name = "posts/detail.html"
     model = Post
+
+    def test_func(self):
+        post = self.get_object()
+        if post.is_private:
+            return post.author == self.request.user
+        return True
+
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     template_name = 'posts/new.html'
     model = Post
-    fields = ["title", "body"]
+    fields = ["title","is_private", "body"]
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -27,7 +53,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     template_name = 'posts/edit.html'
     model = Post
-    fields = ["title", "body"]
+    fields = ["title", "is_private", "body"]
     
     def test_func(self):
         post = self.get_object()

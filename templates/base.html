@@ -24,6 +24,7 @@
               <a class="nav-link" href="{% url 'about' %}">About</a>
               <a class="nav-link" href="{% url 'post_list' %}">Posts</a>
               {% if user.is_authenticated %}
+                <a class="nav-link" href="{% url 'private_list' %}">Secrets</a>
                 <a class="nav-link" href="{% url 'post_new' %}">Create Post</a>
                 <a class="nav-link" href="{% url 'logout' %}">Logout</a>
                 {% else %}
